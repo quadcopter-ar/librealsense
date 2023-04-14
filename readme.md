@@ -1,5 +1,46 @@
 <p align="center"><img src="doc/img/realsense.png" width="70%" /><br><br></p>
 
+
+# Welcome to Quadcopter Realsense
+
+This repository holds important information on how to set up LibRealSense for the XtendedReality Labs.
+
+## Setting up
+- Clone the repo in a folder called `librealsense`. 
+- Inside folder `librealsense`, perform ```mkdir build && cd build```
+- CMake the libraries ```cmake ../ -DBUILD_EXAMPLES=true```
+- Perform an optimized make ```sudo make uninstall && make clean && make -j8 && sudo make install```
+    - For this step, `-j8` signifies we have 8 cores. Change according to yours. E.g `-j2` for dual core
+- Inside the build folder, go to examples ```cd examples/ar-advanced```
+- Run the code ```./rs-ar-advanced```
+    - If you'd like to save or load a map, the command is ```rs-ar-advanced --save_map lab.raw --load_map lab.raw```
+
+
+## Issue Tracking
+- You will find all the issues in a JIRA called <a>quadcopterar.atlassian.net</a> 
+
+<br><br><br>
+<br><br><br>
+<br><br><br>
+<br><br><br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 -----------------
 [![GitHub CI](../../actions/workflows/buildsCI.yaml/badge.svg?branch=development)](../../actions/workflows/buildsCI.yaml)
 
