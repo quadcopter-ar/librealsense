@@ -8,8 +8,7 @@
 #include <fstream>
 #include <vector>
 #include "example.hpp"
-#include "RSInterface.hpp"
-#include <thread>
+#include "RSClient.hpp"
 
 struct point3d {
     float f[3];
@@ -162,13 +161,13 @@ int main(int argc, char * argv[]) try
     window_key_listener key_watcher(app);
     texture fisheye_image;
 
-   std::cout <<"Starting the Client" << std::endl;
-    // std::cout <<"Enter target IP Addr: ";
+    std::cout <<"Starting the Client" << std::endl;
+    std::cout <<"Enter target IP Addr: ";
     std::string IP = "127.0.0.1";
     // std::cin >> IP;
-    RSInterface server = RSInterface(IP);
-    std::thread serv ((&server)->startServer);
-    std::cout << "Started Client" << std::endl;
+    //RSClient client = RSClient("10.211.55.3");
+    RSClient client = RSClient(IP);
+    std::cout <<"Started Client" << std::endl;
     // client.send();
 
     nlohmann::json poseData;
@@ -214,20 +213,26 @@ int main(int argc, char * argv[]) try
         object object_in_device = convert_object_coordinates(virtual_object, object_pose_in_device);
 
         if (object_pose_in_world_initialized && start_transmitting){
-            rs2_pose inverse_shift_by = pose_inverse(shift_by);
-            rs2_pose shifted_camera_position = pose_multiply(inverse_shift_by, device_pose_in_world);
-            // rs2_pose inverse_device_pose = pose_inverse(device_pose_in_world);
-            // rs2_pose shifted_camera_position = pose_multiply(inverse_device_pose, shift_by);
-            std::cout<<"Shifted_Camera_Co-ordinates" << shifted_camera_position.translation << std::endl;
-            
+            rs2_pose inverse_device_pose = pose_inverse(device_pose_in_world);
+            rs2_pose shifted_camera_position = pose_multiply(shift_by, inverse_device_pose);
+            std::cout<<"Shifted_Camera_Co-ordinates:" << shifted_camera_position.translation << std::endl;
+            std::cout<<"Shifted_Camera_Rotation:" << shifted_camera_position.rotation << std::endl;
+            std::cout<<"-----------------------------------"<<std::endl;
             // std::cout << "making json" << std::endl;
-            // server.sendData(device_pose_in_world);
-            // server.sendData(shifted_camera_position);
+            
             // socket
         }
-        
-        server.sendData(device_pose_in_world);
-        
+        // poseData = {
+        //         {"x","1"},
+        //         {"y","1"},
+        //         {"z","1"},
+        //         {"i","1"},
+        //         {"j","1"},
+        //         {"k","1"},
+        //         {"w","1"}
+        //     };
+
+        //     client.sendData(poseData);
 
         // Convert object vertices from device coordinates into fisheye sensor coordinates using extrinsics
         object object_in_sensor;
