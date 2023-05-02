@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Video Conferencing Website</title>
+	<style>
+		body {
+			background-color: #f2f2f2;
+			font-family: Arial, sans-serif;
+			font-size: 16px;
+			margin: 0;
+			padding: 0;
+		}
+
+		.container {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			height: 100vh;
+		}
+
+		h1 {
+			color: #333;
+			font-size: 48px;
+			margin-bottom: 30px;
+			text-align: center;
+		}
+
+		form {
+			background-color: #fff;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+			padding: 20px;
+			width: 400px;
+		}
+
+		label {
+			display: block;
+			font-size: 18px;
+			font-weight: bold;
+			margin-bottom: 10px;
+		}
+
+		input[type=text], select {
+			border-radius: 3px;
+			font-size: 16px;
+			margin-bottom: 15px;
+			padding: 10px;
+			width: 100%;
+		}
+
+		input[type=submit] {
+			background-color: #4CAF50;
+			border: none;
+			border-radius: 3px;
+			color: #fff;
+			cursor: pointer;
+			font-size: 16px;
+			padding: 10px;
+			width: 100%;
+		}
+
+		input[type=submit]:hover {
+			background-color: #3e8e41;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<h1>Video Conferencing Website</h1>
+		<form>
+			<label for="meeting-name">Meeting Name:</label>
+			<input type="text" id="meeting-name" name="meeting-name" placeholder="Enter Meeting Name">
+
+			<label for="date">Date:</label>
+			<input type="text" id="date" name="date" placeholder="Enter Date">
+
+			<label for="time">Time:</label>
+			<input type="text" id="time" name="time" placeholder="Enter Time">
+
+			<label for="participants">Participants:</label>
+			<select id="participants" name="participants">
+				<option value="">--Select Number of Participants--</option>
+				<option value="1-5">1-5</option>
+				<option value="6-10">6-10</option>
+				<option value="11-20">11-20</option>
+				<option value="21+">21+</option>
+			</select>
+
+			<input type="submit" value="Schedule Meeting">
+		</form>
+	</div>
+</body>
+</html>

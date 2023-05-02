@@ -127,18 +127,10 @@ int main(int argc, char * argv[]) try
         if (n.get_category() == RS2_NOTIFICATION_CATEGORY_POSE_RELOCALIZATION) {
             std::cout << "Relocalization Event Detected." << std::endl;
 
-            // If the relocalization event was detected, make that object the origin, and shift every other point in this world
-            rs2_pose origin = identity_pose();
-            
-
             // Get static node if available
             if (tm_sensor.get_static_node(virtual_object_guid, object_pose_in_world.translation, object_pose_in_world.rotation)) {
                 std::cout << "Virtual object loaded:  " << object_pose_in_world.translation << std::endl;
-                // Check shift by manually. Then return the camera's position in the world
-                shift_by = pose_multiply(origin, pose_inverse(object_pose_in_world));
-                std::cout << "Shifting by " << shift_by.translation << std::endl;
                 object_pose_in_world_initialized = true;
-                start_transmitting = true;
             }
         }
     });
@@ -213,20 +205,16 @@ int main(int argc, char * argv[]) try
         // Get the object vertices in device coordinates
         object object_in_device = convert_object_coordinates(virtual_object, object_pose_in_device);
 
-        if (object_pose_in_world_initialized && start_transmitting){
-            rs2_pose inverse_shift_by = pose_inverse(shift_by);
-            rs2_pose shifted_camera_position = pose_multiply(inverse_shift_by, device_pose_in_world);
-            // rs2_pose inverse_device_pose = pose_inverse(device_pose_in_world);
-            // rs2_pose shifted_camera_position = pose_multiply(inverse_device_pose, shift_by);
-            std::cout<<"Shifted_Camera_Co-ordinates" << shifted_camera_position.translation << std::endl;
-            
-            // std::cout << "making json" << std::endl;
-            // server.sendData(device_pose_in_world);
-            // server.sendData(shifted_camera_position);
-            // socket
+        rs2_pose y_new_pose = identity_pose();
+
+        if (object_pose_in_world_initialized){
+                // Assume object to be point x and camera to be point y
+                rs2_pose x_inverse = pose_inverse(object_pose_in_world);
+                
+                y_new_pose = pose_multiply(x_inverse, device_pose_in_world);
         }
         
-        server.sendData(device_pose_in_world);
+        server.sendData(y_new_pose);
         
 
         // Convert object vertices from device coordinates into fisheye sensor coordinates using extrinsics
